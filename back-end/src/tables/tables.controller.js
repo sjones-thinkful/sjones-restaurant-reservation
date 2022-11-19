@@ -1,7 +1,7 @@
 const { request } = require("express");
 const { destroy } = require("../db/connection")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
-const service = require("./reservations.service")
+const service = require("./tables.service")
 
 
 
@@ -115,7 +115,7 @@ async function update(req, res, next){
     res.json({ data }) //might need to adjust this output, jc
 }
 
-async function destroy(req, res, next){
+async function destroytable(req, res, next){
     const tableId = res.locals.table.table_id
     const resId = res.locals.reservation.reservation_id
     await service.freeTable(tableId)
@@ -144,6 +144,6 @@ module.exports = {
   destroy: [
     asyncErrorBoundary(tableExists),
     validTableInUse,
-    asyncErrorBoundary(destroy),
+    asyncErrorBoundary(destroytable),
   ],
 }
