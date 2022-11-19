@@ -6,10 +6,10 @@ import { listTables, updateTable, readReservation } from "../utils/api"
 
 
 function SeatReservation(){
+    const res = useParams()
     const [error, setError] = useState(null)
     const [tables, setTables] = useState([])
     const [reservation, setReservation] = useState([])
-    const res = useParams()
     const [currentTable, setCurrentTable] = useState({ reservation_id: res.reservation_id})
     const history = useHistory()
 
@@ -30,16 +30,16 @@ function SeatReservation(){
     
     useEffect(() => {
         async function loadTables() {
-            const res = await listTables()
-            setTables(res)
+            const resp = await listTables()
+            setTables(resp)
         }
         loadTables()
       }, [])
 
     useEffect(() => {
     async function loadReservation() {
-            const res = await readReservation(res.reservation_id)
-            setReservation(res)
+            const resp = await readReservation(res.reservation_id)
+            setReservation(resp)
         }
         loadReservation()
     }, [res.reservation_id])
