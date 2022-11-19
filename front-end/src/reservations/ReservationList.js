@@ -6,7 +6,7 @@ function ReservationList({ reservations, setReservationsError, loadDashboard }){
     return(
         <div>
             {reservations.map((res) =>(
-                <div>
+                <div key={res.reservation_id}>
                     <Reservation 
                         reservation_id={res.reservation_id}
                         first_name={res.first_name}
