@@ -65,17 +65,24 @@ function validPeopleBooked(req, res, next){
   }
 }
 
-function validStatus(req, res, next){
-  const statusInput = req.body.data.status
-  const statusOptions = ["booked", "seated", "cancelled", "finished"]
-  if (statusInput && !statusOptions.includes(statusInput)){
-    next({ status: 400, message: "Status cannot be unknown. Options are booked, seated, cancelled, finished" })
-  } else if (statusInput == "finished"){
-    next({ status: 400, message: "Reservations that are finished cannot be edited" })
-  } else{
-    next()
+async function validStatus(req, res, next){
+    const { data: { status } = {} } = req.body;
+    const reservationStatus = res.locals.reservation.status;
+  
+    if (status === "unknown") {
+      return next({
+        status: 400,
+        message: `Invalid status: ${status}`,
+      });
+    }
+    if (reservationStatus === "finished") {
+      return next({
+        status: 400,
+        message: `Invalid status: ${reservationStatus}`,
+      });
+    }
+    next();
   }
-}
 
 // Handlers
 
@@ -150,7 +157,7 @@ module.exports = {
   updateStatus: [
     bodyDataExists,
     asyncErrorBoundary(resExists),
-    validStatus,
+    asyncErrorBoundary(validStatus),
     asyncErrorBoundary(update),
   ],
 }
