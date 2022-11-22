@@ -9,7 +9,7 @@ function NewReservation(){
     const initialFormState = {
         first_name: "",
         last_name: "",
-        mobile_numnber: "",
+        mobile_number: "",
         reservation_date: "",
         reservation_time: "",
         people: "",

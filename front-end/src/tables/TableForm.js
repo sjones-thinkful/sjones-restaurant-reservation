@@ -4,8 +4,9 @@ import { useHistory } from 'react-router'
 function TableForm({ table, changeHandler, submitHandler }){
     const history = useHistory()
     return(
-        <form onsubmit={submitHandler}>
+        <form onSubmit={submitHandler}>
             <div>
+                <label htmlFor = "table_name">Table Name</label> <br />
                 <input
                     name = "table_name"
                     type = "string"
@@ -15,6 +16,7 @@ function TableForm({ table, changeHandler, submitHandler }){
                 />
             </div>
             <div>
+                <label htmlFor = "capacity">Capacity</label> <br />
                 <input
                     name = "capacity"
                     type = "number"

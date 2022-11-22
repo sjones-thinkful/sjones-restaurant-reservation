@@ -41,14 +41,12 @@ function validDateTime(req, res, next){
   const requestDateTime = new Date(`${dateInput} ${timeInput}`)
   const currentDateTime = new Date()
   const dayInput = new Date(dateInput).getDay()
-  if (typeof (Date.parse(dateInput)) !== "number"){
-    next({ status: 400, message: "Reservation date must be a date format"})
-  } else if (Number.isNaN(Date.parse(timeInput))){
-    next({ status: 400, message: "Reservation time must be a time format"})
+  if (Number.isNaN(Date.parse( `${dateInput} ${timeInput}`))){
+    next({ status: 400, message: "reservation_date and reservation_time must be a date and time formats"})
   } else if (requestDateTime < currentDateTime) {
     next({ status: 400, message: "Requested reservation must be in the future" })
   } else if (timeInput < "10:30" || timeInput > "20:30" || dayInput == 1){
-    next({ status: 400,  message: "Requested reservation must be within business hours"})
+    next({ status: 400,  message: "Requested reservation must be within business hours, and closed Tuesdays"})
   }
   else {
     next()
@@ -59,9 +57,9 @@ function validPeopleBooked(req, res, next){
   const peopleInput = req.body.data.people
   const statusInput = req.body.data.status
   if (typeof peopleInput !== "number" || peopleInput < 1){
-    next({ status: 400, message: "People must be a number 1 or greater"})
+    next({ status: 400, message: "people must be a number 1 or greater"})
   } else if (statusInput && statusInput !== "booked"){
-    next({ status: 400, message: "Reservations in a status other than booked cannot be created" })
+    next({ status: 400, message: `Reservations in a status other than booked, such as ${statusInput}, cannot be created` })
   } else {
     next()
   }
@@ -71,7 +69,7 @@ function validStatus(req, res, next){
   const statusInput = req.body.data.status
   const statusOptions = ["booked", "seated", "cancelled", "finished"]
   if (statusInput && !statusOptions.includes(statusInput)){
-    next({ status: 400, message: "Status options are booked, seated, cancelled, finished" })
+    next({ status: 400, message: "Status cannot be unknown. Options are booked, seated, cancelled, finished" })
   } else if (statusInput == "finished"){
     next({ status: 400, message: "Reservations that are finished cannot be edited" })
   } else{
@@ -83,12 +81,12 @@ function validStatus(req, res, next){
 
 async function list(req, res, next){
   const date = req.query.date
-  const mobile = req.query.mobile_number
+  const phone = req.query.mobile_number
   if (date) {
     const data = await service.list(date)
     res.json({ data })
-  } else if (mobile) {
-    const data = await service.search(mobile)
+  } else if (phone) {
+    const data = await service.search(phone)
     res.json({ data })
   } else {
     let currentDate = new Date().toJSON().slice(0, 10)
@@ -115,9 +113,7 @@ async function update(req, res, next){
   res.json({ data })
 }
 
-async function updateStatus(req, res, next){
 
-}
 
 
 module.exports = {

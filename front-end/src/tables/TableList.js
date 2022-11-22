@@ -6,7 +6,7 @@ function TableList({ tables, setTablesError, loadDashboard }){
     return(
         <div>
             {tables.map((tab) =>(
-                <div key={tab.table_id}>
+                <div key={`${tab.table_id} ${tab.table_name}`}>
                     <Table
                         table_id={tab.table_id}
                         table_name={tab.table_name}

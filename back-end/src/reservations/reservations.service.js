@@ -1,11 +1,11 @@
 const knex = require("../db/connection")
 
 
-function search(mobile_number){
+function search(phone) {
   return knex("reservations")
     .whereRaw(
       "translate(mobile_number, '() -', '') like ?",
-      `%${mobile_number.replace(/\D/g, "")}%`
+      `%${phone.replace(/\D/g, "")}%`
     )
     .orderBy("reservation_date")
 }
@@ -20,7 +20,7 @@ function list(date){
 
 function create(newRes){
   return knex("reservations")
-    .insert(newRest)
+    .insert(newRes)
     .returning("*")
     .then(results => results[0])
 }

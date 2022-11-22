@@ -25,7 +25,6 @@ function Table({table_id, table_name, capacity, reservation_id, setTablesError, 
                 </p>
                 {reservation_id ? (
                     <button
-                    className="btn btn-primary mb-3"
                     value={table_id}
                     data-table-id-finish={table_id}
                     onClick={finishHandler}

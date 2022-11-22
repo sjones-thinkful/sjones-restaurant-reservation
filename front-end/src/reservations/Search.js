@@ -5,23 +5,25 @@ import { listReservations } from "../utils/api"
 
 function Search(){
     const [error, setError] = useState(null)
+    const [search, setSearch] = useState({})
     const [reservations, setReservations] = useState([])
-    const [phone, setPhone] = useState("")
-    const [failedSearchResult, setFailedSearchResult] = useState("")
-
+  
+  
     const changeHandler = (event) => {
-        setPhone(event.target.value)
+      const { target } = event
+      const value = target.value
+      setSearch({ ...search, [target.name]: value })
+    }
+  
+    const searchHandler = (event) => {
+      event.preventDefault()
+      const abortController = new AbortController()
+      listReservations( search, abortController.signal )
+        .then((response)=>setReservations(response))
+        .catch((error)=>console.log(error))
+      return () => abortController.abort()
     }
 
-    const searchHandler = (event) => {
-        event.preventDefault()
-        const abortController = new AbortController()
-        listReservations({ phone }, abortController.signal)
-            .then((res) => setReservations(res))
-            .then(setFailedSearchResult("No reservations found"))
-            .catch(setError)
-        return ( () => abortController.abort() )
-    }
 
     return(
         <>
@@ -32,11 +34,14 @@ function Search(){
                     name = "mobile_number"
                     type = "string"
                     onChange = {changeHandler}
-                    value = {phone}
                     required
                 />
                 <button onClick={searchHandler}>Search</button>
             </div>
+            <div>
+                {reservations.length !== 0 ? <ReservationList reservations={reservations}/> : `No reservations found with this phone number`}
+            </div>
+
         </>
     )
 }

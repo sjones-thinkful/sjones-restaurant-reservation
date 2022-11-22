@@ -4,8 +4,9 @@ import { useHistory } from 'react-router'
 function ReservationForm({ reservation, changeHandler, submitHandler }){
     const history = useHistory()
     return(
-        <form onsubmit={submitHandler}>
+        <form onSubmit={submitHandler}>
             <div>
+                <label htmlFor = "first_name">First Name</label> <br />
                 <input
                     name = "first_name"
                     type = "string"
@@ -15,6 +16,7 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 />
             </div>
             <div>
+                <label htmlFor = "last_name">Last Name</label> <br />
                 <input
                     name = "last_name"
                     type = "string"
@@ -24,6 +26,7 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 />
             </div>
             <div>
+                <label htmlFor = "mobile_name">Phone</label> <br />
                 <input
                     name = "mobile_number"
                     type = "string"
@@ -33,6 +36,7 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 />
             </div>
             <div>
+                <label htmlFor = "reservation_date">Date</label> <br />
                 <input
                     name = "reservation_date"
                     type = "date"
@@ -42,6 +46,7 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 />
             </div>
             <div>
+                <label htmlFor = "reservation_time">Time</label> <br />
                 <input
                     name = "reservation_time"
                     type = "time"
@@ -51,6 +56,7 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 />
             </div>
             <div>
+                <label htmlFor = "people">Party Size</label> <br />
                 <input
                     name = "people"
                     type = "number"

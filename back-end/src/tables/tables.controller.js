@@ -28,7 +28,7 @@ function bodyDataHas(propertyName) {
 
 async function tableExists(req, res, next){
   const { table_id } = req.params
-  const foundTable = await service.read(table_id)
+  const foundTable = await service.readTable(table_id)
   if (foundTable) {
     res.locals.table = foundTable
     return next()
@@ -40,8 +40,8 @@ async function tableExists(req, res, next){
 }
 
 async function resExists(req, res, next){
-  const { reservation_id } = req.params
-  const foundRes = await service.read(reservation_id)
+  const { reservation_id } = req.body.data
+  const foundRes = await service.readReservation(reservation_id)
   if (foundRes) {
     res.locals.reservation = foundRes
     return next()
@@ -55,9 +55,9 @@ async function resExists(req, res, next){
 function validNameCapacity(req, res, next){
   const { table_name, capacity } = req.body.data
   if (table_name.length <2){
-    next({ status: 400, message: "Table Names must be at least 2 characters"})
-  } else if (capacity < 1 || isNAN(capacity)){
-    next({ status: 400, message: "Table Capacity must be a number 1 or greater" })
+    next({ status: 400, message: "table_name must be at least 2 characters"})
+  } else if (capacity < 1 || typeof capacity !== "number"){
+    next({ status: 400, message: "Table capacity must be a number 1 or greater" })
   } else {
     next()
   }
@@ -69,11 +69,11 @@ function validTableSeating(req, res, next){
   const resStatusInput = res.locals.reservation.status
   const resCapInput = res.locals.table.capacity
   if (tableStatusInput == "occupied"){
-    next({ status: 400, message: "Table already in use" })
+    next({ status: 400, message: "Table occupied, already in use" })
   } else if (resStatusInput == "seated"){
-    next({ status: 400, message: "Party already seated" })
+    next({ status: 400, message: "Party already seated or finished" })
   } else if (resCapInput < tablePeopleInput){
-    next({ status: 400, message: "Table not big enough for party" })
+    next({ status: 400, message: "Table capacity not big enough for party" })
   } else{
     next()
   }
@@ -81,8 +81,8 @@ function validTableSeating(req, res, next){
 
 function validTableInUse(req, res, next){
   const tableStatusInput = res.locals.table.status
-  if (!tableStatusInput == "occupied"){
-    next({ status: 400, message: "Cannot open table that isn't in use"})
+  if (tableStatusInput !== "occupied"){
+    next({ status: 400, message: "Table not occupied or finished. Cannot open table that isn't in use"})
   } else {
     next()
   }
@@ -111,16 +111,16 @@ async function update(req, res, next){
     const resId = res.locals.reservation.reservation_id
     const updatedTable = { ...req.body.data, table_id: tableId}
     await service.occupyTable(tableId, resId)
-    const data = await service.updateReservation(updatedTable, "seated")
-    res.json({ data }) //might need to adjust this output, jc
+    const data = await service.updateReservation(resId, "seated")
+    res.status(200).json({ data })
 }
 
 async function destroytable(req, res, next){
     const tableId = res.locals.table.table_id
-    const resId = res.locals.reservation.reservation_id
+    const resId = res.locals.table.reservation_id
     await service.freeTable(tableId)
     const data = await service.updateReservation(resId, "finished")
-    res.json({ data }) //might need to adjust output, jic
+    res.status(200).json({ data })
 }
 
 

@@ -40,7 +40,7 @@ function occupyTable(tableId, resId){
         .update({ "reservation_id": resId, "status": "occupied"})
 }
 
-function freeTable(table_id){
+function freeTable(tableId){
     return knex("tables")
         .where({ "table_id": tableId })
         .update({ reservation_id: null, "status": "free"})
