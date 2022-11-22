@@ -29,7 +29,7 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 <label htmlFor = "mobile_name">Phone</label> <br />
                 <input
                     name = "mobile_number"
-                    type = "string"
+                    type = "tel"
                     onChange = {changeHandler}
                     value = {reservation.mobile_number}
                     required
