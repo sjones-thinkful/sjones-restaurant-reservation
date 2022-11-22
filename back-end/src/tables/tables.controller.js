@@ -63,6 +63,25 @@ function validNameCapacity(req, res, next){
   }
 }
 
+async function checkStatus(req, res, next) {
+  const { data: { status } = {} } = req.body;
+  const reservationStatus = res.locals.reservation.status;
+
+  if (status === "unknown") {
+    return next({
+      status: 400,
+      message: `Invalid status: ${status}`,
+    });
+  }
+  if (reservationStatus === "finished") {
+    return next({
+      status: 400,
+      message: `Invalid status: ${reservationStatus}`,
+    });
+  }
+  next();
+}
+
 function validTableSeating(req, res, next){
   const tableStatusInput = res.locals.table.status
   const tablePeopleInput = res.locals.reservation.people
@@ -70,7 +89,7 @@ function validTableSeating(req, res, next){
   const resCapInput = res.locals.table.capacity
   if (tableStatusInput == "occupied"){
     next({ status: 400, message: "Table occupied, already in use" })
-  } else if (resStatusInput == "seated"){
+  } else if (resStatusInput == "seated" || resStatusInput == "finished"){
     next({ status: 400, message: "Party already seated or finished" })
   } else if (resCapInput < tablePeopleInput){
     next({ status: 400, message: "Table capacity not big enough for party" })
@@ -137,6 +156,7 @@ module.exports = {
     asyncErrorBoundary(tableExists),
     bodyDataExists,
     bodyDataHas("reservation_id"),
+    asyncErrorBoundary(checkStatus),
     asyncErrorBoundary(resExists),
     validTableSeating,
     asyncErrorBoundary(update),
