@@ -63,24 +63,24 @@ function validNameCapacity(req, res, next){
   }
 }
 
-async function checkStatus(req, res, next) {
-  const { data: { status } = {} } = req.body;
-  const reservationStatus = res.locals.reservation.status;
+// async function checkStatus(req, res, next) {
+//   const { data: { status } = {} } = req.body;
+//   const reservationStatus = res.locals.reservation.status;
 
-  if (status === "unknown") {
-    return next({
-      status: 400,
-      message: `Invalid status: ${status}`,
-    });
-  }
-  if (reservationStatus === "finished") {
-    return next({
-      status: 400,
-      message: `Invalid status: ${reservationStatus}`,
-    });
-  }
-  next();
-}
+//   if (status === "unknown") {
+//     return next({
+//       status: 400,
+//       message: `Invalid status: ${status}`,
+//     });
+//   }
+//   if (reservationStatus === "finished") {
+//     return next({
+//       status: 400,
+//       message: `Invalid status: ${reservationStatus}`,
+//     });
+//   }
+//   next();
+// }
 
 function validTableSeating(req, res, next){
   const tableStatusInput = res.locals.table.status
@@ -156,7 +156,7 @@ module.exports = {
     asyncErrorBoundary(tableExists),
     bodyDataExists,
     bodyDataHas("reservation_id"),
-    asyncErrorBoundary(checkStatus),
+    //asyncErrorBoundary(checkStatus),
     asyncErrorBoundary(resExists),
     validTableSeating,
     asyncErrorBoundary(update),
