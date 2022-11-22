@@ -4,6 +4,7 @@ import ReservationList from "../reservations/ReservationList"
 import TableList from "../tables/TableList"
 import ErrorAlert from "../layout/ErrorAlert"
 import ChangeDashDate from "./ChangeDashDate"
+import "./Dashboard.css"
 
 /**
  * Defines the dashboard page.
@@ -32,11 +33,11 @@ function Dashboard({ date }) {
   }
 
   return (
-    <main>
+    <main className="main">
       
       <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
+      <div>
+        <h4>Reservations for date</h4>
       </div>
       <ErrorAlert error={reservationsError} />
       <ChangeDashDate currentDate={date} />
