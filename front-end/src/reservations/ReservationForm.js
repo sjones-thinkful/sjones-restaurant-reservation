@@ -31,6 +31,7 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                     name = "mobile_number"
                     type="text"
                     pattern="[1-9]{1}[0-9]{9}"
+                    title="Phone number should be 10 digits, numbers only"
                     onChange = {changeHandler}
                     value = {reservation.mobile_number}
                     required
