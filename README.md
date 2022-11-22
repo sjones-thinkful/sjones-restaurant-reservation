@@ -20,4 +20,4 @@ Completed User Stories to produce a working dashboard for restaurant reservation
 * DBeaver
 
 #
-![alt text](https://github.com/sjones-thinkful/sjones-restaurant-reservation/blob/[Screenshot]/main.png?raw=true)
+<img width="1432" alt="Screen Shot 2022-11-21 at 9 48 31 PM" src="https://user-images.githubusercontent.com/60156456/203225552-84c5da48-0e36-481f-aecc-b512c99dfacc.png">
