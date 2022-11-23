@@ -26,7 +26,7 @@ function TableForm({ table, changeHandler, submitHandler }){
                 />
             </div>
             <button type="submit">Submit</button>
-            <button onClick={() => history.push("/")}>Cancel</button>
+            <button onClick={() => history.go(-1)}>Cancel</button>
         </form>
     )
 }

@@ -32,11 +32,11 @@ function Search(){
             <div>
                 <input
                     name = "mobile_number"
-                    type = "string"
+                    type = "text"
                     onChange = {changeHandler}
                     required
                 />
-                <button onClick={searchHandler}>Search</button>
+                <button type="submit" onClick={searchHandler}>Search</button>
             </div>
             <div>
                 {reservations.length !== 0 ? <ReservationList reservations={reservations}/> : `No reservations found with this phone number`}

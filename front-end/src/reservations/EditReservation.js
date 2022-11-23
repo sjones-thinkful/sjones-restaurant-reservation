@@ -1,13 +1,14 @@
-import React, { useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { useHistory, useParams } from "react-router"
-import { readReservation } from "../utils/api"
+import ErrorAlert from "../layout/ErrorAlert"
+import { updateReservation, readReservation } from "../utils/api"
 import ReservationForm from "./ReservationForm"
 
 function EditReservation(){
     const [reservation, setReservation] = useState("")
     const [error, setError] = useState(null)
     const history = useHistory()
-    const res_id = useParams().reservation_id
+    const reservation_id = useParams().reservation_id
 
     const changeHandler = (event) => {
         setReservation({ ...reservation, [event.target.name]: event.target.value })
@@ -16,9 +17,9 @@ function EditReservation(){
     const submitHandler = (event) => {
         event.preventDefault()
         const abortController = new AbortController()
-        createReservation(reservation)
+        updateReservation(reservation)
             .then(() => {
-                history.push(`/dashboard?date=${reservation_date}`)
+                history.push(`/dashboard?date=${reservation.reservation_date.slice(0, 10)}`)
             })
             .catch(setError)
         return ( () => abortController.abort() )
@@ -26,12 +27,13 @@ function EditReservation(){
 
     useEffect(() => {
         async function loadReservation(){
-            const res = await readReservation(res_id)
+            const res = await readReservation(reservation_id)
             setReservation(res)
         }
         loadReservation()
-    }, [res_id])
+    }, [reservation_id])
 
+  
     return(
         <>
             <ErrorAlert error={error} setError={setError}/>

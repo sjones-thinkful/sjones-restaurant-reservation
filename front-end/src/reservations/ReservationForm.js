@@ -10,8 +10,9 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 <input
                     name = "first_name"
                     type = "string"
+                    id = "first_name"
                     onChange = {changeHandler}
-                    value = {reservation.first_name}
+                    value = {`${reservation.first_name}`}
                     required
                 />
             </div>
@@ -20,8 +21,9 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 <input
                     name = "last_name"
                     type = "string"
+                    id = "last_name"
                     onChange = {changeHandler}
-                    value = {reservation.last_name}
+                    value = {`${reservation.last_name}`}
                     required
                 />
             </div>
@@ -29,11 +31,10 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 <label htmlFor = "mobile_name">Phone</label> <br />
                 <input
                     name = "mobile_number"
-                    type="text"
-                    pattern="[1-9]{1}[0-9]{9}"
-                    title="Phone number should be 10 digits, numbers only"
+                    type = "tel"
+                    id = "mobile_number"
                     onChange = {changeHandler}
-                    value = {reservation.mobile_number}
+                    value = {`${reservation.mobile_number}`}
                     required
                 />
             </div>
@@ -42,8 +43,9 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 <input
                     name = "reservation_date"
                     type = "date"
+                    id = "reservation_date"
                     onChange = {changeHandler}
-                    value = {reservation.reservation_date}
+                    value = {`${reservation.reservation_date}`}
                     required
                 />
             </div>
@@ -52,8 +54,9 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 <input
                     name = "reservation_time"
                     type = "time"
+                    id = "reservation_time"
                     onChange = {changeHandler}
-                    value = {reservation.reservation_time}
+                    value = {`${reservation.reservation_time}`}
                     required
                 />
             </div>
@@ -62,13 +65,14 @@ function ReservationForm({ reservation, changeHandler, submitHandler }){
                 <input
                     name = "people"
                     type = "number"
+                    id = "people"
                     onChange = {changeHandler}
-                    value = {reservation.people}
+                    value = {`${reservation.people}`}
                     required
                 />
             </div>
             <button type="submit">Submit</button>
-            <button onClick={() => history.push("/")}>Cancel</button>
+            <button onClick={() => history.go(-1)}>Cancel</button>
         </form>
     )
 }
